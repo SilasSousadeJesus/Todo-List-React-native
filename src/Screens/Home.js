@@ -15,8 +15,15 @@ export default function Home() {
   const handleHidePress = () => {
     if (isHidden) {
       setIsHidden(false);
+      setLocalData(
+        todosData.sort((a, b) => {
+          return a.isCompleted - b.isCompleted;
+        })
+      );
+      return;
     }
     setIsHidden(!isHidden);
+    setLocalData(localData.filter((todo) => !todo.isCompleted));
   };
 
   return (
@@ -36,7 +43,9 @@ export default function Home() {
       >
         <Text style={styles.title}>Today</Text>
         <TouchableOpacity onPress={handleHidePress}>
-          <Text style={{ color: "#3478f6" }}>Hide isCompleted</Text>
+          <Text style={{ color: "#3478f6" }}>
+            {isHidden ? "Show Completed" : "Hide Completed"}
+          </Text>
         </TouchableOpacity>
       </View>
       <TodoList todosData={localData.filter((todo) => todo.isToday)} />
